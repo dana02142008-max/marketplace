@@ -48,6 +48,12 @@ export function Header() {
             </span>
           </Link>
 
+          {/* Used section link */}
+          <Link href="/used" className="hidden lg:flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 rounded-xl hover:bg-amber-50 dark:hover:bg-amber-950/20 transition-all flex-shrink-0">
+            <span>♻️</span>
+            Used
+          </Link>
+
           {/* Categories dropdown — desktop */}
           <div className="hidden lg:block relative">
             <button
