@@ -18,6 +18,8 @@ import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { StarRating } from '@/components/ui/StarRating';
 import { Button } from '@/components/ui/Button';
+import { CryptoPaymentModal } from '@/components/payment/CryptoPaymentModal';
+import { FiatPaymentModal } from '@/components/payment/FiatPaymentModal';
 import { cn } from '@/lib/utils';
 
 const conditionInfo = {
@@ -35,6 +37,8 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const [showOfferModal, setShowOfferModal] = useState(false);
+  const [showCryptoModal, setShowCryptoModal] = useState(false);
+  const [showFiatModal, setShowFiatModal] = useState(false);
   const [offerAmount, setOfferAmount] = useState('');
   const [offerSent, setOfferSent] = useState(false);
   const [showAllDesc, setShowAllDesc] = useState(false);
@@ -265,10 +269,21 @@ export default function ProductPage() {
 
             {/* CTA buttons */}
             <div className="flex flex-col gap-3">
-              <Button size="xl" className="w-full text-base font-bold bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 shadow-glow">
+              <Button size="xl" onClick={() => setShowFiatModal(true)} className="w-full text-base font-bold bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 shadow-glow">
                 <CreditCard className="w-5 h-5" />
                 Buy Now — {formatPrice(product.price)}
               </Button>
+              <button
+                onClick={() => setShowCryptoModal(true)}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-primary-400 dark:hover:border-primary-600 hover:bg-primary-50 dark:hover:bg-primary-950/20 transition-all group"
+              >
+                <span className="text-lg">🔐</span>
+                <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400">Pay with Crypto</span>
+                <div className="flex items-center gap-1 ml-auto">
+                  <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 px-1.5 py-0.5 rounded-md font-mono">ETH</span>
+                  <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 px-1.5 py-0.5 rounded-md font-mono">SOL</span>
+                </div>
+              </button>
               <div className="grid grid-cols-2 gap-3">
                 {product.isNegotiable && (
                   <Button
@@ -469,6 +484,19 @@ export default function ProductPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <CryptoPaymentModal
+        isOpen={showCryptoModal}
+        onClose={() => setShowCryptoModal(false)}
+        price={product.price}
+        productTitle={product.title}
+      />
+      <FiatPaymentModal
+        isOpen={showFiatModal}
+        onClose={() => setShowFiatModal(false)}
+        price={product.price}
+        productTitle={product.title}
+      />
     </div>
   );
 }
